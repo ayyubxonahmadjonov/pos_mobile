@@ -20,7 +20,6 @@ class AppRoutes {
       // case RouteNames.verifyOtp:
       //   return _route(const VerifyOtpScreen());
 
-
       case RouteNames.selectingDevice:
         return _route(const SelectingPosDeviceScreen());
 
@@ -47,11 +46,6 @@ class AppRoutes {
 
       case RouteNames.purchaseDetails:
         return _route(const PurchaseDetailsScreen());
-
-      case RouteNames.purchaseProducts:
-        return _route(PurchaseProductListScreen(
-          editC: args as bool,
-        ));
 
       case RouteNames.newOrder:
         return _route(BlocProvider(

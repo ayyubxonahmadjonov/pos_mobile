@@ -6,10 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pos_mobile/hive_helper/hive_helper.dart';
 import 'package:pos_mobile/models/product/product_model.dart';
+import 'package:pos_mobile/product_model.dart';
 
 class HiveItemsHelper {
   const HiveItemsHelper._();
-  static final Box<Product> box = HiveBoxes.productsBox;
+  static final Box<ProductFromJson> box = HiveBoxes.productFromJsonBox;
   static final AppPrefs _prefs = AppPrefs.instance;
 
   static int _counted = 0;
@@ -31,12 +32,10 @@ class HiveItemsHelper {
 
       print('Loaded JSON: ${jsonList.length} products');
 
-      List<Product> products = jsonList.map((e) => Product.fromJson(e)).toList();
+      List<ProductFromJson> products = jsonList.map((e) => ProductFromJson.fromJson(e)).toList();
 
       print('Converted to Product objects: ${products.length} items');
-
-      // 3️⃣ Hive ga saqlash (putAll funksiyasidan foydalanamiz)
-      await HiveItemsHelper.putAll(products);
+      await HiveItemsHelper.putAllFromJson(products);
 
       print('All products saved to Hive successfully!');
     } catch (e, stackTrace) {
@@ -44,9 +43,36 @@ class HiveItemsHelper {
       print(stackTrace);
     }
   }
-  static Future<void> putAll(List<Product> products) async {
+  static Future<void> putAllFromJson(List<ProductFromJson> products) async {
+  try {
+    Map<String, ProductFromJson> entries = {};
+
+    for (var product in products) {
+      // ID yoki key mavjudligini tekshirish
+      if (product.id != null && product.id!.isNotEmpty) {
+        final hiveKey = product.id!;
+        entries[hiveKey] = product;
+      }
+    }
+
+    // Hive ga saqlash
+    if (entries.isNotEmpty) {
+      // Hive box ProductFromJson bo'lishi kerak
+      var boxJson = await Hive.openBox<ProductFromJson>('productsBoxJson');
+      await boxJson.putAll(entries);
+    }
+
+    print('✅ All ProductFromJson saved to Hive successfully!');
+
+  } catch (e, stackTrace) {
+    print('❌ Error in putAllFromJson: $e');
+    print(stackTrace);
+  }
+}
+
+  static Future<void> putAll(List<ProductFromJson> products) async {
     try {
-      Map<String, Product> entries = {};
+      Map<String, ProductFromJson> entries = {};
 
       for (var product in products) {
         // ID yoki key mavjudligini tekshirish
@@ -54,7 +80,7 @@ class HiveItemsHelper {
             (product.key.isNotEmpty)) {
           
           // Complex fieldlarni encode qilish
-          product.encodeComplexFields();
+          // product.encodeComplexFields();
           
           // To'g'ri key ni aniqlash
           final hiveKey = product.key.isNotEmpty ? product.key : product.id!;
@@ -64,7 +90,7 @@ class HiveItemsHelper {
         }
       }
 
-      // Eski sanalgan mahsulotlarni saqlash
+
       if (_prefs.lastUpdage != 0) {
         await putCountedProducts();
         entries.addAll(_countedProducts);
@@ -84,12 +110,12 @@ class HiveItemsHelper {
   }
 
   /// Bitta mahsulotni yangilash
-  static Future<void> updateProduct(Product product) async {
+  static Future<void> updateProduct(ProductFromJson product) async {
     try {
       final key = product.key.isNotEmpty ? product.key : product.id!;
       
       // Encode qilish
-      product.encodeComplexFields();
+      // product.encodeComplexFields();
       
       // Saqlash
       await box.put(key, product);
@@ -100,7 +126,7 @@ class HiveItemsHelper {
   }
 
   /// Product ni key bo'yicha olish
-  static Product? getByKey(String key) {
+  static ProductFromJson? getByKey(String key) {
     try {
       return box.get(key);
     } catch (e) {
@@ -109,7 +135,7 @@ class HiveItemsHelper {
   }
 
   /// Product ni ID bo'yicha olish
-  static Product? getById(String id) {
+  static ProductFromJson? getById(String id) {
     try {
       for (var product in box.values) {
         if (product.id == id) {
@@ -123,12 +149,12 @@ class HiveItemsHelper {
   }
 
   /// Barcode bo'yicha qidirish
-  static Product? getByBarcode(String? barcode) {
+  static ProductFromJson? getByBarcode(String? barcode) {
     if (barcode == null || barcode.isEmpty) return null;
     
     try {
       for (var item in box.values) {
-        if (item.barcode != null && item.barcode!.contains(barcode)) {
+        if (item.barcodes != null && item.barcodes!.contains(barcode)) {
           return item;
         }
       }
@@ -139,7 +165,7 @@ class HiveItemsHelper {
   }
 
   /// Mahsulotlarni qidirish
-  static Future<List<Product>> searchProducts(String query) async {
+  static Future<List<ProductFromJson>> searchProducts(String query) async {
     try {
       query = query.trim().toLowerCase().toLatin();
       
@@ -149,8 +175,8 @@ class HiveItemsHelper {
 
         return (name.contains(query) ||
             sku.contains(query) ||
-            (product.barcode != null && 
-             product.barcode!.join(' ').toLowerCase().contains(query)));
+            (product.barcodes != null && 
+             product.barcodes!.join(' ').toLowerCase().contains(query)));
       }).toList();
     } catch (e) {
       // print('❌ Error searching products: $e');
@@ -158,16 +184,16 @@ class HiveItemsHelper {
     }
   }
 
-  static final Map<String, Product> _countedProducts = {};
+  static final Map<String, ProductFromJson> _countedProducts = {};
 
   /// Sanalgan mahsulotlarni saqlash
   static Future<void> putCountedProducts() async {
     try {
       _countedProducts.clear();
-      Map<String, Product> entries = {};
+      Map<String, ProductFromJson> entries = {};
       
       for (var product in box.values) {
-        if (product.realStock > 0) {
+        if (product.amount != null && product.amount! > 0) {
           final key = product.key.isNotEmpty ? product.key : product.id!;
           entries[key] = product;
         }
@@ -181,14 +207,14 @@ class HiveItemsHelper {
   /// Barcha skanerlangan mahsulotlarni tozalash
   static Future<void> clearScannedProducts() async {
     try {
-      Map<String, Product> entries = {};
+      Map<String, ProductFromJson> entries = {};
       int i = 0;
       
       for (var product in box.values) {
         final key = product.key.isNotEmpty ? product.key : product.id!;
         
-        product.setIsScanned = false;
-        product.setRealStock = 0;
+        // product.setIsScanned = false;
+        // product.setRealStock = 0;
         
         entries[key] = product;
         i++;
@@ -221,7 +247,7 @@ class HiveItemsHelper {
       'total': box.length,
       'counted': _counted,
       'uncounted': _uncounted,
-      'scanned': box.values.where((p) => p.isScanned).length,
+      'scanned': box.values.where((p) => p.amount != null && p.amount! > 0).length,
     };
   }
 }

@@ -3,12 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:pos_mobile/core/core.dart';
 import 'package:pos_mobile/hive_helper/hive_item_helper.dart';
 import 'package:pos_mobile/models/product/product_model.dart';
+import 'package:pos_mobile/product_model.dart';
 import 'package:pos_mobile/routes/app_navigator.dart';
 import 'package:pos_mobile/view/screens/home/pages/items/components/product_data.dart';
 import 'package:pos_mobile/view/widgets/widgets.dart';
 
 class ProductDetilsScreen extends StatefulWidget {
-  final Product product;
+  final ProductFromJson product;
   const ProductDetilsScreen({super.key, required this.product});
 
   @override
@@ -17,7 +18,7 @@ class ProductDetilsScreen extends StatefulWidget {
 
 class _ProductDetilsScreenState extends State<ProductDetilsScreen> {
   late TextEditingController _stockController;
-  late Product product;
+  late ProductFromJson product;
   bool _isSaving = false;
 
 @override
@@ -26,13 +27,13 @@ void initState() {
   product = widget.product;
 
   final apiAmount =
-      product.measurementValues?.shopId?.amount ?? 0;
+      product.amount;
 
-  /// ❗ FAQAT BIR MARTA SAQLANADI
-  if (product.originalAmount == null || product.originalAmount == 0) {
-    product.originalAmount = apiAmount;
-    HiveItemsHelper.updateProduct(product);
-  }
+  // /// ❗ FAQAT BIR MARTA SAQLANADI
+  // if (product.originalAmount == null || product.originalAmount == 0) {
+  //   product.originalAmount = apiAmount;
+  //   HiveItemsHelper.updateProduct(product);
+  // }
 
   _stockController =
       TextEditingController(text: apiAmount.toString());
@@ -60,15 +61,15 @@ void initState() {
 
     try {
 
-      final oldAmount = product.measurementValues?.shopId?.amount ?? 0;
+      final oldAmount = product.amount;
 
       final inputAmount = num.parse(stockText);
 
-      final finalAmount = oldAmount + inputAmount;
+      final finalAmount = oldAmount! + inputAmount;
 
-      product.updateShopAmount(finalAmount);
+      // product.amount = num.parfinalAmount;
 
-      await HiveItemsHelper.updateProduct(product);
+      // await HiveItemsHelper.updateProduct(product);
 
       if (mounted) {
         _showMessage('Сохранено');
@@ -127,8 +128,8 @@ void initState() {
                     // Product barcode
                     ProductData(
                       title: AppStrings.barcode,
-                      data: Text(product.barcode?.isNotEmpty == true
-                          ? product.barcode!.join(', ')
+                      data: Text(product.barcodes?.isNotEmpty == true
+                          ? product.barcodes!.join(', ')
                           : 'N/A'),
                     ),
                     Divider(height: 40.h),
@@ -143,9 +144,7 @@ void initState() {
                     // Current stock
                     ProductData(
                       title: AppStrings.stock,
-                      data: Text(product.measurementValues?.shopId?.amount
-                              .toString() ??
-                          '0'),
+                      data: Text(product.amount.toString()),
                     ),
                     Divider(height: 40.h),
 

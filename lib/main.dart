@@ -12,7 +12,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = AppHttpOverrides();
   await HiveService.init();
-    // await HiveItemsHelper.importProductsFromJson('assets/product_list.json');
+  await HiveItemsHelper.importProductsFromJson('assets/product_list.json');
+
   runApp(const MyApp());
 
   SystemChrome.setSystemUIOverlayStyle(

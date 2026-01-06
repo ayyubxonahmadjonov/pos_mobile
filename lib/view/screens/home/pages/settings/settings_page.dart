@@ -256,7 +256,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     contentText: AppStrings.wantToClear,
                     onYesPressed: () async {
                       
-                      HiveItemsHelper.clearScannedProducts();
+                      // HiveItemsHelper.clearScannedProducts();
                       HiveBoxes.productsBox.clear();
                       setState(() {});
                       AppNavigator.pop();

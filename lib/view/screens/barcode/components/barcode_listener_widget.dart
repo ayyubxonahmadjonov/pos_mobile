@@ -19,6 +19,7 @@ import 'package:pos_mobile/hive_helper/hive_helper.dart';
 import 'package:pos_mobile/hive_helper/order_helper.dart';
 import 'package:pos_mobile/models/models.dart';
 import 'package:pos_mobile/models/order/order_model.dart';
+import 'package:pos_mobile/product_model.dart';
 import 'package:pos_mobile/routes/routes.dart';
 import 'package:pos_mobile/view/screens/home/pages/items/product_details_screen.dart';
 import 'package:pos_mobile/view/screens/screen.dart';
@@ -48,18 +49,18 @@ class BarcodeListenerWidget extends StatelessWidget {
           useKeyDownEvent: true,
           onBarcodeScanned: (barcode) {
             if (!visible) return;
-            Product? product = HiveItemsHelper.getByBarcode(barcode);
+            ProductFromJson? product = HiveItemsHelper.getByBarcode(barcode);
             if (product == null) {
               Fluttertoast.showToast(msg: AppStrings.productNotFound);
             } else {
               switch (from) {
                 case "purchase":
-                  AppNavigator.push(AddPurchaseProduct(product: product, dispatch: editC,));
+                  // AppNavigator.push(AddPurchaseProduct(product: product, dispatch: editC,));
                   break;
                 case "order":
-                  OrderItem orderItem = OrderItem.fromProduct(product);
-                  OrderHelper.setCurrentItem = orderItem;
-                  AppNavigator.push(const OrderCountPage());
+                  // OrderItem orderItem = OrderItem.fromProduct(product);
+                  // OrderHelper.setCurrentItem = orderItem;
+                  // AppNavigator.push(const OrderCountPage());
                   break;
 
                 case "inventory":

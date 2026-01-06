@@ -15,6 +15,7 @@ import 'package:pos_mobile/hive_helper/hive_box_names.dart';
 import 'package:pos_mobile/models/employee/employee_model.dart';
 import 'package:pos_mobile/models/history/history.dart';
 import 'package:pos_mobile/models/product/product_model.dart';
+import 'package:pos_mobile/product_model.dart';
 
 class HiveBoxes {
   const HiveBoxes._();
@@ -23,6 +24,8 @@ class HiveBoxes {
   static Box<Product> productsBox = Hive.box(HiveBoxNames.products);
   static Box<HistoryModel> historyBox = Hive.box(HiveBoxNames.history);
   static Box<Employee> employeeBox = Hive.box(HiveBoxNames.employees);
+  static Box<ProductFromJson> productFromJsonBox = Hive.box(HiveBoxNames.productFromJson);
+
   static Future<void> clearBoxes() async {
     await Future.wait([
       prefBox.clear(),

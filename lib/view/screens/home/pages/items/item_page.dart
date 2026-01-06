@@ -178,6 +178,7 @@ import 'package:pos_mobile/bloc/get_items/get_items_bloc.dart';
 import 'package:pos_mobile/core/core.dart';
 import 'package:pos_mobile/hive_helper/hive_item_helper.dart';
 import 'package:pos_mobile/models/product/product_model.dart';
+import 'package:pos_mobile/product_model.dart';
 import 'package:pos_mobile/product_status.dart';
 import 'package:pos_mobile/sort_by.dart';
 import 'package:pos_mobile/view/screens/home/pages/items/components/product_list.dart';
@@ -245,17 +246,11 @@ class _ItemsPageState extends State<ItemsPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     
+    print('allproducts length ${HiveItemsHelper.box.values.length}');
     return ValueListenableBuilder(
       valueListenable: HiveItemsHelper.box.listenable(),
-      builder: (context, Box<Product> box, child) {
-        List<Product> allProducts = box.values.toList();
-        List<Product> scannedProducts =
-            allProducts.where((p) => p.isInBox).toList();
-        List<Product> notScannedProducts =
-            allProducts.where((p) => !p.isInBox).toList();
-        HiveItemsHelper.setCounted = scannedProducts.length;
-        HiveItemsHelper.setUncounted = notScannedProducts.length;
-
+      builder: (context, Box<ProductFromJson> box, child) {
+    List<ProductFromJson> allProducts = box.values.toList();
         if (box.isEmpty) {
           _loadAllProducts(); // Agar bo'sh bo'lsa, qayta yuklash
         }
@@ -263,7 +258,6 @@ class _ItemsPageState extends State<ItemsPage> with TickerProviderStateMixin {
         return Scaffold(
           floatingActionButton: FloatingActionButton(onPressed: () async{
             print('importProductsFromJson pressed');
-            await HiveItemsHelper.importProductsFromJson('assets/product_list.json');
           },),
           appBar: ItemsAppBar(controller: _tabController),
           body: BlocConsumer<GetItemsBloc, GetItemsState>(
@@ -298,13 +292,13 @@ class _ItemsPageState extends State<ItemsPage> with TickerProviderStateMixin {
                     isLoadingMore: _isLoadingMore[0],
                   ),
                   ProductList(
-                    products: scannedProducts,
+                    products: allProducts,
                     scrollController: _scrollControllers[1],
                     isLoadingMore: _isLoadingMore[1],
                     isScanned: true,
                   ),
                   ProductList(
-                    products: notScannedProducts,
+                    products: allProducts,
                     scrollController: _scrollControllers[2],
                     isLoadingMore: _isLoadingMore[2],
                   ),

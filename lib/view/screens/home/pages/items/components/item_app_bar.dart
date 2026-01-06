@@ -55,12 +55,12 @@ class ItemsAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ],
                     ),
                   ).onClick(() {
-                    showSearch(
-                      context: context,
-                      delegate: ProductSearchDelegate(
-                        screenEnum: ProductScreenEnum.inventory,
-                      ),
-                    );
+                    // showSearch(
+                    //   context: context,
+                    //   delegate: ProductSearchDelegate(
+                    //     screenEnum: ProductScreenEnum.inventory,
+                    //   ),
+                    // );
                   }),
                 ),
                 AppIconButton(

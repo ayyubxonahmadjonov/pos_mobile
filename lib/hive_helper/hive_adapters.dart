@@ -21,4 +21,6 @@ class HiveAdapters {
   static const String historyAdapter = 'HistoryAdapter';
   static const String orderModelAdapter = 'OrderModelAdapter';
   static const String orderItemAdapter = 'OrderItemAdapter';
+  static const String productFromJsonAdapter = 'ProductFromJsonAdapter';
+
 }

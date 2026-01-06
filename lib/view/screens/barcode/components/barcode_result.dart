@@ -16,6 +16,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pos_mobile/core/core.dart';
 import 'package:pos_mobile/hive_helper/hive_item_helper.dart';
 import 'package:pos_mobile/models/product/product_model.dart';
+import 'package:pos_mobile/product_model.dart';
 import 'package:pos_mobile/routes/app_navigator.dart';
 import 'package:pos_mobile/view/screens/home/pages/items/product_details_screen.dart';
 import 'counter_button.dart';
@@ -24,7 +25,7 @@ import 'product_info.dart';
 import '../../../widgets/widgets.dart';
 
 class BarcodeResult extends StatelessWidget {
-  final Product product;
+  final ProductFromJson product;
   const BarcodeResult({super.key, required this.product});
 
   @override
@@ -58,7 +59,7 @@ class BarcodeResult extends StatelessWidget {
                         // Barcode
                         ProductInfo(
                           title: AppStrings.barcode,
-                          data: product.barcode != null ? product.barcode!.join(', ') : '',
+                          data: product.barcodes != null ? product.barcodes!.join(', ') : '',
                           size: 13,
                         ),
                         SizedBox(height: 5.h),

@@ -67,10 +67,10 @@ class PurchaseProductTile extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (clickable) {
-          AppNavigator.push(AddPurchaseProduct(
-            product: product,
-            dispatch: isEditing,
-          ));
+          // AppNavigator.push(AddPurchaseProduct(
+          //   product: product,
+          //   dispatch: isEditing,
+          // ));
         }
       },
       child: Padding(

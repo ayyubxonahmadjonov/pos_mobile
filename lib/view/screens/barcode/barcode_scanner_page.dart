@@ -93,7 +93,7 @@ class _BarcodeScanPageState extends State<BarcodeScanPage> with WidgetsBindingOb
               final String? scannedCode = barcode?.rawValue;
               if (scannedCode == null || scannedCode.isEmpty) return;
 
-              Product? product = HiveItemsHelper.getByBarcode(scannedCode);
+              Product? product = Product();
               if (product == null) {
                 Fluttertoast.showToast(msg: 'Product not found!');
                 return;
@@ -106,11 +106,11 @@ class _BarcodeScanPageState extends State<BarcodeScanPage> with WidgetsBindingOb
               await _controller.stop(); // kamerani to'xtatish
 
               if (widget.from == "inventory") {
-                await AppNavigator.push(ProductDetilsScreen(product: product))
-                    .then((_) => _controller.start());
+                // await AppNavigator.push(ProductDetilsScreen(product: product))
+                    // .then((_) => _controller.start());
               } else if (widget.from == "purchase") {
-                await AppNavigator.push(AddPurchaseProduct(product: product))
-                    .then((_) => _controller.start());
+                // await AppNavigator.push(AddPurchaseProduct(product: product))
+                    // .then((_) => _controller.start());
               } else if (widget.from == "order") {
                 OrderItem orderItem = OrderItem.fromProduct(product);
                 OrderHelper.setCurrentItem = orderItem;

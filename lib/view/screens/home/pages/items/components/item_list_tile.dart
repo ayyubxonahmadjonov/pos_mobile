@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:pos_mobile/hive_helper/order_helper.dart';
 import 'package:pos_mobile/models/order/order_model.dart';
 import 'package:pos_mobile/models/product/product_model.dart';
+import 'package:pos_mobile/product_model.dart';
 import 'package:pos_mobile/routes/app_navigator.dart';
 import 'package:pos_mobile/view/screens/home/pages/items/product_details_screen.dart';
 import 'package:pos_mobile/view/screens/orders/orders.dart';
@@ -22,7 +23,7 @@ import 'package:pos_mobile/view/screens/purches/purches.dart';
 
 // ignore: must_be_immutable
 class ItemsListTile extends StatelessWidget {
-  final Product product;
+  final ProductFromJson product;
   final ProductScreenEnum screen;
   bool isScanned;
   bool isPurchase;
@@ -43,11 +44,11 @@ class ItemsListTile extends StatelessWidget {
     return ListTile(
       // leading: AppImage(imageUrl: '#'),
       title: Text(product.name ?? ''),
-      subtitle: Text(product.barcode?.join(', ') ?? ''),
+      subtitle: Text(product.barcodes?.first.toString() ?? ''),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(product.measurementValues?.shopId?.amount.toString() ?? '-'),
+          Text(product.amount.toString()),
         ],
       ),
       onTap: () async {
@@ -62,16 +63,16 @@ class ItemsListTile extends StatelessWidget {
               //     .add(GetStartOnlineProductEvent(
               //   product.id.toString(),
               // ));
-              AppNavigator.push(AddPurchaseProduct(
-                product: product,
-                dispatch: editC,
-                a: a,
-              ));
+              // AppNavigator.push(AddPurchaseProduct(
+              //   product: product,
+              //   dispatch: editC,
+              //   a: a,
+              // ));
             }
 
             break;
           case ProductScreenEnum.order:
-            OrderHelper.setCurrentItem = OrderItem.fromProduct(product);
+            // OrderHelper.setCurrentItem = OrderItem.fromProduct(product);
             AppNavigator.push(const OrderCountPage());
             break;
         }

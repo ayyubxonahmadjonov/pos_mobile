@@ -63,11 +63,12 @@
 */
 import 'package:flutter/material.dart';
 import 'package:pos_mobile/models/products.dart';
+import 'package:pos_mobile/product_model.dart';
 import '../../../../../../models/models.dart';
 import 'item_list_tile.dart';
 
 class ProductList extends StatelessWidget {
-  final List<Product> products;
+  final List<ProductFromJson> products;
   final ScrollController? scrollController;
   final bool isLoadingMore;
   final bool isScanned;
@@ -103,7 +104,7 @@ class ProductList extends StatelessWidget {
           );
         }
 
-        final Product product = products[index];
+        final ProductFromJson product = products[index];
         return ItemsListTile(
           editC: editC,
           screen: screenEnum,
