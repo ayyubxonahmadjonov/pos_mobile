@@ -1,0 +1,154 @@
+{
+    "statusCode": 200,
+    "error": "Ok",
+    "message": "Success",
+    "data": {
+        "_id": "62363ec174a1f518a00e7f01",
+        "dimentions": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        },
+        "stopped_item": false,
+        "last_updated": 1677757198678,
+        "last_stock_updated": 1677757198678,
+        "last_price_change": 0,
+        "name": "Lotus soeviy sous 230ml pet",
+        "sale_is_avialable": true,
+        "sold_by": "each",
+        "count_by_type": 0,
+        "prices": [],
+        "price_auto_fill": true,
+        "price_currency": "uzs",
+        "cost": 3556.591475409836,
+        "cost_currency": "uzs",
+        "max_cost": 15000,
+        "barcode": [
+            "4781006001104",
+            "47810060011049"
+        ],
+        "composite_item": false,
+        "is_composite_item": false,
+        "composite_items": [],
+        "use_production": false,
+        "use_sub_production": false,
+        "is_track_stock": true,
+        "in_stock": null,
+        "low_stock": 0,
+        "optimal_stock": 0,
+        "purchase_cost_currency": "uzs",
+        "representation_type": "color",
+        "shape": "circle",
+        "representation": "#4CAF50",
+        "taxes": [],
+        "item_type": "item",
+        "has_variants": false,
+        "variant_options": [],
+        "variant_items": [],
+        "modifiers": [],
+        "workgroups": [],
+        "show_on_bot": false,
+        "sku": 1257,
+        "category": "5f4fbc5245f359319e3d2641",
+        "price": 0,
+        "barcode_by_type": "",
+        "default_purchase_cost": 3300,
+        "mxik": "",
+        "services": [
+            {
+                "price": 0,
+                "is_price_change": false,
+                "price_currency": "uzs",
+                "price_auto_fill": true,
+                "prices": [
+                    {
+                        "from": 1,
+                        "price": 4450
+                    },
+                    {
+                        "from": 2,
+                        "price": 4350
+                    },
+                    {
+                        "from": 6,
+                        "price": 4250
+                    }
+                ],
+                "in_stock": 205,
+                "reminder": 0,
+                "variant_name": "",
+                "stopped_item": false,
+                "printed_time": 0,
+                "printed_price_change_time": 0,
+                "last_price_change": 0,
+                "_id": "62e3b03c27ff594a2fd258e0",
+                "available": true,
+                "low_stock": 0,
+                "optimal_stock": 0,
+                "service": "5f4fbc5245f359319e3d263b",
+                "service_name": "Invan Market"
+            },
+            {
+                "price": 0,
+                "is_price_change": false,
+                "price_currency": "uzs",
+                "price_auto_fill": true,
+                "prices": [
+                    {
+                        "from": 1,
+                        "price": 4450
+                    },
+                    {
+                        "from": 2,
+                        "price": 4350
+                    },
+                    {
+                        "from": 6,
+                        "price": 4250
+                    }
+                ],
+                "in_stock": 39,
+                "reminder": 0,
+                "variant_name": "",
+                "stopped_item": false,
+                "printed_time": 0,
+                "printed_price_change_time": 0,
+                "last_price_change": 0,
+                "_id": "62e3b03c27ff594a2fd258df",
+                "available": true,
+                "low_stock": 0,
+                "optimal_stock": 0,
+                "service": "62ac79e01a2b6735aa687353",
+                "service_name": "New Fialia"
+            }
+        ],
+        "category_name": "Other",
+        "category_id": "5f4fbc5245f359319e3d2641",
+        "organization": "5f4fbc5245f359319e3d2635",
+        "createdAt": "2022-03-19T20:36:17.323Z",
+        "updatedAt": "2023-03-02T11:39:58.683Z",
+        "__v": 0,
+        "suppliers": [
+            {
+                "_id": "626189153d42bd751c42eee3",
+                "supplier_id": "625969f2d40e863f5dfda811",
+                "supplier_name": "lll",
+                "service_id": "5f4fbc5245f359319e3d263b",
+                "service_name": "Shopify",
+                "stock": 5001
+            },
+            {
+                "_id": "626c1e852eb943140b64663f",
+                "supplier_id": "6267ce5b83ee39be3a2ac012",
+                "supplier_name": "1111111111111111111111",
+                "service_id": "5f4fbc5245f359319e3d263b",
+                "service_name": "Shopify",
+                "stock": 23
+            }
+        ],
+        "primary_supplier_id": "631b0f5515d793e9c7ea5630",
+        "primary_supplier_name": "Murodjon",
+        "created_time": 1677757198648,
+        "nds_value": 12
+    }
+}
