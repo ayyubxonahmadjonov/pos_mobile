@@ -164,13 +164,11 @@ class ApiRequests extends ApiService {
     );
   }
 
-   Future<Products?> fetchProducts(int page, String search, int limit,
-      SortBy sortBy, ProductsStatus status) async {
-    String shopId = prefs.getString(PrefKeys.shopId,);
+   Future<Products?> fetchProducts(String page) async {
  
     final data = await post(
 headers: _headers.withTokenV2(),
-        '/api/v1/products?active_for_sale=${status.name}&limit=$limit&page=$page&search=$search&shop_ids=$shopId&sort_by=${sortBy == SortBy.empty ? '' : sortBy.name}');
+        '/api/v1/short_products_for_pos?limit=10000&page=$page');
    
    print(data.statusCode);
    print(data.response);

@@ -1,4 +1,4 @@
-// /* 
+// /*
 //     Created by Bahromjon Po'lat
 //     Created at 30.08.2022 18:52
 // */
@@ -235,10 +235,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   contentText: AppStrings.wantToUpdate,
                   onYesPressed: () {
                     BlocProvider.of<GetItemsBloc>(context)
-                        .add(GetAllProductsEvent(
-                      page: 0,
-                      limit: 0, 
-                    ));
+                        .add(GetAllProductsEvent());
                     AppNavigator.pop();
                   });
               setState(() {});
@@ -255,7 +252,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: AppStrings.clearProducts,
                     contentText: AppStrings.wantToClear,
                     onYesPressed: () async {
-                      
                       // HiveItemsHelper.clearScannedProducts();
                       HiveBoxes.productsBox.clear();
                       setState(() {});

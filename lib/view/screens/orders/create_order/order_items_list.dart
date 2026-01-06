@@ -30,12 +30,12 @@ class OrderItemsList extends StatelessWidget {
           AppIconButton(
             icon: Icons.search,
             onPressed: () {
-              // showSearch(
-              //   context: context,
-              //   delegate: ProductSearchDelegate(
-              //     screenEnum: ProductScreenEnum.order,
-              //   ),
-              // );
+              showSearch(
+                context: context,
+                delegate: ProductSearchDelegate(
+                  screenEnum: ProductScreenEnum.order,
+                ),
+              );
             },
           ),
         ],

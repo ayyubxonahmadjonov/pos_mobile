@@ -9,6 +9,7 @@ import 'package:pos_mobile/bloc/blocs.dart';
 import 'package:pos_mobile/core/core.dart';
 import 'package:pos_mobile/hive_helper/hive_item_helper.dart';
 import 'package:pos_mobile/routes/routes.dart';
+import 'package:pos_mobile/view/screens/barcode/barcode_listener_page.dart';
 import 'package:pos_mobile/view/screens/barcode/select_scan_type.dart';
 import 'product_search_delegate.dart';
 import 'package:pos_mobile/view/widgets/widgets.dart';
@@ -55,24 +56,22 @@ class ItemsAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ],
                     ),
                   ).onClick(() {
-                    // showSearch(
-                    //   context: context,
-                    //   delegate: ProductSearchDelegate(
-                    //     screenEnum: ProductScreenEnum.inventory,
-                    //   ),
-                    // );
+                    showSearch(
+                      context: context,
+                      delegate: ProductSearchDelegate(
+                        screenEnum: ProductScreenEnum.inventory,
+                      ),
+                    );
                   }),
                 ),
                 AppIconButton(
                   icon: CupertinoIcons.barcode_viewfinder,
                   onPressed: () {
+                    print('bosildi');
+             
                     AppNavigator.push(
-                      const SelectBarCodeTypePage(from: 'inventory'),
+                      const BarcodeListenerPage(fromScanner: 'items'),
                     );
-                    // AppNavigator.pushNamed(
-                    //   RouteNames.barcodeScan,
-                    //   args: 'inventory',
-                    // );
                   },
                 )
               ],

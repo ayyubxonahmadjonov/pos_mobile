@@ -7,13 +7,12 @@
 //     LinkedIn: https://linkedin.com/in/bahromjon-polat
 //     Telegram: https://t.me/BahromjonPolat
 
-//     Documentation: 
+//     Documentation:
 
 // */
 
 // import 'package:flutter/material.dart';
 // import 'package:pos_mobile/models/products.dart';
-
 
 // import '../../../../../../models/models.dart';
 // import 'item_list_tile.dart';
@@ -68,8 +67,8 @@ import '../../../../../../models/models.dart';
 import 'item_list_tile.dart';
 
 class ProductList extends StatelessWidget {
-  final List<ProductFromJson> products;
-  final ScrollController? scrollController;
+  final List<Product> products;
+
   final bool isLoadingMore;
   final bool isScanned;
   final bool isPurchase;
@@ -80,7 +79,6 @@ class ProductList extends StatelessWidget {
   const ProductList({
     super.key,
     required this.products,
-    this.scrollController,
     this.isLoadingMore = false,
     this.isScanned = false,
     this.isPurchase = false,
@@ -92,11 +90,9 @@ class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      controller: scrollController,
       padding: const EdgeInsets.all(8),
       itemCount: products.length + (isLoadingMore ? 1 : 0),
       itemBuilder: (context, index) {
-        // Oxirgi element — loading indicator
         if (index == products.length) {
           return const Padding(
             padding: EdgeInsets.all(16.0),
@@ -104,7 +100,7 @@ class ProductList extends StatelessWidget {
           );
         }
 
-        final ProductFromJson product = products[index];
+        final Product product = products[index];
         return ItemsListTile(
           editC: editC,
           screen: screenEnum,

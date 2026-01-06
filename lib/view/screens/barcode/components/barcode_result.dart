@@ -25,7 +25,7 @@ import 'product_info.dart';
 import '../../../widgets/widgets.dart';
 
 class BarcodeResult extends StatelessWidget {
-  final ProductFromJson product;
+  final Product product;
   const BarcodeResult({super.key, required this.product});
 
   @override
@@ -59,7 +59,7 @@ class BarcodeResult extends StatelessWidget {
                         // Barcode
                         ProductInfo(
                           title: AppStrings.barcode,
-                          data: product.barcodes != null ? product.barcodes!.join(', ') : '',
+                          data: product.barcode != null ? product.barcode!.join(', ') : '',
                           size: 13,
                         ),
                         SizedBox(height: 5.h),

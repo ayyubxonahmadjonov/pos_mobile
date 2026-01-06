@@ -15,44 +15,48 @@ class GetItemsBloc extends Bloc<GetItemsEvent, GetItemsState> {
     on<GetAllProductsEvent>(getAllProducts);
   }
 
-  Future<void> getAllProducts(
-    GetAllProductsEvent event,
-    Emitter<GetItemsState> emit,
-  ) async {
-    emit(GetAllProductsProccesState());
+Future<void> getAllProducts(
+  GetAllProductsEvent event,
+  Emitter<GetItemsState> emit,
+) async {
+  emit(GetAllProductsProccesState());
 
-    if (event.isFilter != null && event.isFilter!) {
-      emit(ProductLoadingByFilter());
+  int page = 1;
+  int totalPage = 1;
+
+  do {
+    final Products? result =
+        await ApiRequests.instance.fetchProducts(
+          page.toString(),
+        
+        );
+        print("Total Products == ${result?.total}");
+
+    if (result == null || result.data == null) {
+      emit(GetAllProductsFailuressState());
+      return;
     }
 
+    num totaProductsCount = num.parse(result.total!);
+    if (page == 1 && result.total != null) {
+      totalPage = (totaProductsCount / 10000).ceil();
+    }
 
-    // Products? result = await ApiRequests.instance.fetchProducts(
-    //   event.page ?? 1, // Agar page null bo'lsa, boshidan boshla
-    //   event.search,
-    //   event.limit ?? 60000, // Barchasini olish uchun katta limit (60k)
-    //   event.sortBy,
-    //   event.status,
-    // );
+    final products = result.data!
+        .where((e) => e.id != null && e.id!.isNotEmpty)
+        .map((e) => Product.fromApiModel(e))
+        .toList();
 
-    // if (result != null && result.data != null && result.data!.isNotEmpty) {
-    //   List<Product> products = result.data!
-    //       .where((apiProduct) =>
-    //           apiProduct.id != null && apiProduct.id!.isNotEmpty)
-    //       .map((apiProduct) => Product.fromApiModel(apiProduct))
-    //       .toList();
+    if (products.isNotEmpty) {
+      await HiveItemsHelper.putAll(products);
+    }
 
-    //   if (products.isNotEmpty) {
-    //     await HiveItemsHelper.putAll(products);
-    //   } else {
-    //     print('⚠️ No valid products to save');
-    //   }
+    page++;
+  } while (page <= totalPage);
 
-    //   emit(GetAllProductsSuccesState());
-    // } else {
-    //   print('⚠️ No data received from API or data is null');
-    //   emit(GetAllProductsFailuressState());
-    // }
-  }
+  emit(GetAllProductsSuccesState());
+}
+
 }
 
 

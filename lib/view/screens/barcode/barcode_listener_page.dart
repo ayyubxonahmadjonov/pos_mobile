@@ -17,7 +17,8 @@ class _BarcodeListenerPageState extends State<BarcodeListenerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Scaffold(
+      body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -46,6 +47,8 @@ class _BarcodeListenerPageState extends State<BarcodeListenerPage> {
           ),
         ],
       ),
+    )
+  
     );
   }
 }

@@ -15,7 +15,7 @@ import 'package:pos_mobile/services/http_result.dart';
 import 'package:http/http.dart' as http;
 
 abstract class ApiServiceInterface {
-  final String baseUrl = 'https://dev.api.7i.uz';
+  final String baseUrl = 'https://api.7i.uz';
   Future<HttpResult> get(String path, {Map<String, String> headers});
 
   Future<HttpResult> post(

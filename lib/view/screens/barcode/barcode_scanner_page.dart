@@ -56,7 +56,6 @@ class _BarcodeScanPageState extends State<BarcodeScanPage> with WidgetsBindingOb
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    // Agar kamera hali ishga tushmagan bo'lsa yoki ruxsat yo'q bo'lsa — hech nima qilmaymiz
     if (!_controller.value.isInitialized) return;
 
     switch (state) {
@@ -106,11 +105,11 @@ class _BarcodeScanPageState extends State<BarcodeScanPage> with WidgetsBindingOb
               await _controller.stop(); // kamerani to'xtatish
 
               if (widget.from == "inventory") {
-                // await AppNavigator.push(ProductDetilsScreen(product: product))
-                    // .then((_) => _controller.start());
+                await AppNavigator.push(ProductDetilsScreen(product: product))
+                    .then((_) => _controller.start());
               } else if (widget.from == "purchase") {
-                // await AppNavigator.push(AddPurchaseProduct(product: product))
-                    // .then((_) => _controller.start());
+                await AppNavigator.push(AddPurchaseProduct(product: product))
+                    .then((_) => _controller.start());
               } else if (widget.from == "order") {
                 OrderItem orderItem = OrderItem.fromProduct(product);
                 OrderHelper.setCurrentItem = orderItem;

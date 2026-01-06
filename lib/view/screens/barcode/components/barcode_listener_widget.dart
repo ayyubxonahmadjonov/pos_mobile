@@ -49,18 +49,18 @@ class BarcodeListenerWidget extends StatelessWidget {
           useKeyDownEvent: true,
           onBarcodeScanned: (barcode) {
             if (!visible) return;
-            ProductFromJson? product = HiveItemsHelper.getByBarcode(barcode);
+            Product? product = HiveItemsHelper.getByBarcode(barcode);
             if (product == null) {
               Fluttertoast.showToast(msg: AppStrings.productNotFound);
             } else {
               switch (from) {
                 case "purchase":
-                  // AppNavigator.push(AddPurchaseProduct(product: product, dispatch: editC,));
+                  AppNavigator.push(AddPurchaseProduct(product: product, dispatch: editC,));
                   break;
                 case "order":
-                  // OrderItem orderItem = OrderItem.fromProduct(product);
-                  // OrderHelper.setCurrentItem = orderItem;
-                  // AppNavigator.push(const OrderCountPage());
+                  OrderItem orderItem = OrderItem.fromProduct(product);
+                  OrderHelper.setCurrentItem = orderItem;
+                  AppNavigator.push(const OrderCountPage());
                   break;
 
                 case "inventory":
