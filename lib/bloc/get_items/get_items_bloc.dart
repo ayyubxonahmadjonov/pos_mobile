@@ -30,7 +30,6 @@ Future<void> getAllProducts(
           page.toString(),
         
         );
-        print("Total Products == ${result?.total}");
 
     if (result == null || result.data == null) {
       emit(GetAllProductsFailuressState());

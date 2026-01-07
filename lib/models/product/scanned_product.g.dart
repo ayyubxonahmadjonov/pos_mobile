@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'product_model.dart';
+part of 'scanned_product.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ProductApdapter extends TypeAdapter<Product> {
+class ScannedProductAdapter extends TypeAdapter<ScannedProduct> {
   @override
-  final int typeId = 4;
+  final int typeId = 11;
 
   @override
-  Product read(BinaryReader reader) {
+  ScannedProduct read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Product(
+    return ScannedProduct(
       id: fields[0] as String?,
       sku: fields[1] as String?,
       name: fields[2] as String?,
@@ -34,9 +34,6 @@ class ProductApdapter extends TypeAdapter<Product> {
       lastUpdatedTime: fields[17] as String?,
       serialNumber: fields[18] as bool?,
       ownerType: fields[19] as String?,
-      originalAmount: fields[39] as num?,
-      updateAmount: fields[40] as num?,
-      isScannedProduct: fields[41] as bool?,
     )
       .._shopPricesJson = fields[20] as String?
       .._categoriesJson = fields[21] as String?
@@ -56,11 +53,14 @@ class ProductApdapter extends TypeAdapter<Product> {
       .._productName = fields[35] as String?
       .._primarySupplierId = fields[36] as String?
       .._primarySupplierName = fields[37] as String?
-      .._servicesJson = fields[38] as String?;
+      .._servicesJson = fields[38] as String?
+      ..originalAmount = fields[39] as num?
+      ..updateAmount = fields[40] as num?
+      ..isScannedProduct = fields[41] as bool?;
   }
 
   @override
-  void write(BinaryWriter writer, Product obj) {
+  void write(BinaryWriter writer, ScannedProduct obj) {
     writer
       ..writeByte(39)
       ..writeByte(0)
@@ -149,7 +149,7 @@ class ProductApdapter extends TypeAdapter<Product> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ProductApdapter &&
+      other is ScannedProductAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -1,297 +1,17 @@
-// /*
-//     Created by: Bakhromjon Polat
-//     Created on: Dec 29 2022 13:03:29
 
-//     Github: https://github.com/BahromjonPolat
-//     Leetcode: https://leetcode.com/BahromjonPolat/
-//     LinkedIn: https://linkedin.com/in/bahromjon-polat
-//     Telegram: https://t.me/BahromjonPolat
-
-//     Documentation:
-
-// */
-
-// import 'package:hive_flutter/hive_flutter.dart';
-// import 'package:pos_mobile/hive_helper/hive_helper.dart';
-// import 'package:pos_mobile/models/product_service/product_service.dart';
-
-// part 'product_model.g.dart';
-
-// @HiveType(typeId: HiveTypes.product, adapterName: HiveAdapters.productApdapter)
-// class Product extends HiveObject {
-//   @override
-//   get key => _id;
-//   @HiveField(0)
-//   String? _id;
-//   @HiveField(1)
-//   String? _name;
-//   @HiveField(2)
-//   List<String> _barcode = [];
-//   @HiveField(3)
-//   num? _sku;
-//   @HiveField(4)
-//   num? _inStock;
-//   @HiveField(5)
-//   num _realStock = 0;
-//   @HiveField(6)
-//   bool _isScanned = false;
-//   // @HiveField(7)
-//   String? _productId;
-//   // @HiveField(8)
-//   num? _amount;
-//   // @HiveField(9)
-//   num? _cost;
-//   num? _purchaseCost;
-//   num? _quantity;
-//   num? _toReceive;
-//   num? _received;
-//   num? _defaultCost;
-//   // @HiveField(10)
-//   String? _productName;
-//   String? _primarySupplierId;
-//   String? _primarySupplierName;
-//   List<ProductService>? _services;
-//   String? get id => _id;
-//   String? get name => _name;
-//   List<String> get barcode => _barcode;
-//   num? get sku => _sku;
-//   num? get inStock => _inStock;
-//   num get realStock => _realStock;
-//   bool get isSCanned => _isScanned;
-//   num get toReceive => _toReceive ?? 0;
-//   num get received => _received ?? 0;
-//   List<ProductService> get services => _services ?? [];
-//   String get primarySupplierId => _primarySupplierId ?? "";
-//   String get primarySupplierName => _primarySupplierName ?? "";
-//   set setRealStock(num realStock) => _realStock = realStock;
-//   set setIsScanned(bool isScanned) => _isScanned = isScanned;
-//   set setToReceive(num toReceive) => _toReceive = toReceive;
-//   set setReceived(num received) => _received = received;
-//   num get cost => _cost ?? 0;
-//   set setCost(num cost) => _cost = cost;
-//   num get amount => _amount ?? 0;
-//   set setAmount(num amount) => _amount = amount;
-//   num get purchaseCost => _purchaseCost ?? 0;
-//   set setPurchaseCost(num cost) => _purchaseCost = cost;
-//   num get quantity => _quantity ?? 0;
-//   set setQuantity(num quantity) => _quantity = quantity;
-//   num get defaultCost => _defaultCost ?? 0;
-//   set defaultCost(num defaultCost) => _defaultCost = defaultCost;
-
-//   Product({
-//     String? id,
-//     String? name,
-//     List<String>? barcode,
-//     num? sku,
-//     num? inStock,
-//     num realStock = 0,
-//     String? productId,
-//     num? cost,
-//     String? productName,
-//     num? amount,
-//     num? toReceive,
-//     num? received,
-//     num? quantity,
-//     String? primarySupplierId,
-//     String? primarySupplierName,
-//     List<ProductService>? services,
-//     num? defaultCost,
-//   }) {
-//     _id = id;
-//     _name = name;
-//     _barcode = barcode ?? [];
-//     _sku = sku;
-//     _inStock = inStock;
-//     _realStock = realStock;
-//     _productId = productId;
-//     _cost = cost;
-//     _productName = productName;
-//     _amount = amount;
-//     _toReceive = toReceive;
-//     _received = received;
-//     _primarySupplierId = primarySupplierId;
-//     _primarySupplierName = primarySupplierName;
-//     _quantity = quantity;
-//     _services = services;
-//     _defaultCost = defaultCost;
-//   }
-
-//   Product.fromJson(dynamic json) {
-//     _id = json['_id'] ?? json['product_id'];
-//     _name = json['name'] ?? json['product_name'];
-//     _barcode = json['barcode'] != null ? json['barcode'].cast<String>() : [];
-//     _sku = json['sku'];
-//     _inStock = json['in_stock'];
-//     _productId = json['product_id'];
-//     _cost = json['cost'];
-//     _productName = json['product_name'];
-//     _amount = json['amount'];
-//     _quantity = json['quality'];
-//     _purchaseCost = json['purchase_cost'];
-//     _toReceive = json['to_receive'];
-//     _received = json['received'];
-//     _primarySupplierId = json["primary_supplier_id"];
-//     _primarySupplierName = json["primary_supplier_name"];
-//     _defaultCost = json['default_purchase_cost'];
-//     if (json['services'] != null) {
-//       _services = (json['services'] as List)
-//           .map((e) => ProductService.fromJson(e))
-//           .toList();
-//     }
-//   }
-
-//   Product copyWith({
-//     String? id,
-//     String? name,
-//     List<String>? barcode,
-//     num? sku,
-//     num? inStock,
-//     num? realStock,
-//     String? productId,
-//     num? cost,
-//     String? productName,
-//     num? amount,
-//     num? toReceive,
-//     num? received,
-//     num? quantity,
-//     String? primarySupplierId,
-//     String? primarySupplierName,
-//     List<ProductService>? services,
-//   }) =>
-//       Product(
-//         id: id ?? _id,
-//         name: name ?? _name,
-//         barcode: barcode ?? _barcode,
-//         sku: sku ?? _sku,
-//         inStock: inStock ?? _inStock,
-//         realStock: realStock ?? _realStock,
-//         productId: productId ?? _productId,
-//         cost: cost ?? _cost,
-//         productName: productName ?? _productName,
-//         amount: amount ?? _amount,
-//         toReceive: toReceive ?? _toReceive,
-//         received: received ?? _received,
-//         quantity: quantity ?? _quantity,
-//         primarySupplierId: primarySupplierId ?? primarySupplierId,
-//         primarySupplierName: primarySupplierName ?? primarySupplierName,
-//         services: services ?? _services,
-//       );
-
-//   Map<String, dynamic> toJson() {
-//     final map = <String, dynamic>{};
-//     map['_id'] = _id ?? _productId;
-//     map['name'] = _name ?? _productName;
-//     map['barcode'] = _barcode;
-//     map['sku'] = _sku;
-//     map['in_stock'] = _inStock;
-//     map['purchase_cost'] = _purchaseCost;
-//     map['quality'] = _quantity;
-//     map['product_name'] = _productName ?? _name;
-//     map['product_id'] = _productId ?? _id;
-//     map['cost'] = _cost;
-//     map['to_receive'] = _toReceive;
-//     map['received'] = _received ?? 0;
-//     map["primary_supplier_id"] = _primarySupplierId;
-//     map["primary_supplier_name"] = _primarySupplierName;
-//     map['services'] = _services?.map((service) => service.toJson());
-//     map['default_purchase_cost'] = _defaultCost;
-
-//     return map;
-//   }
-
-//   Map<String, dynamic> toPurchase() {
-//     final map = <String, dynamic>{};
-//     map['product_id'] = _productId ?? _id;
-//     map['product_name'] = _productName ?? _name;
-//     map['sku'] = _sku;
-//     map['purchase_cost'] = _purchaseCost;
-//     map['quality'] = _quantity;
-//     map['purchase_cost_cyrrency'] = 'uzs';
-//     return map;
-//   }
-
-//   String getInStock() {
-//     if (quantity.runtimeType == int) {
-//       return quantity.toString();
-//     }
-//     return (quantity).toStringAsFixed(2);
-//   }
-
-//   String getPurchaseCoast() {
-//     if (defaultCost.runtimeType == int) {
-//       return purchaseCost.toString();
-//     }
-//     return (purchaseCost).toStringAsFixed(2);
-//   }
-
-//   String getDefaultCost() {
-//     if (defaultCost.runtimeType == int) {
-//       return defaultCost.toString();
-//     }
-//     return (defaultCost).toStringAsFixed(2);
-//   }
-
-//   String getCost() {
-//     if (cost.runtimeType == int) {
-//       return cost.toString();
-//     }
-//     return (cost).toStringAsFixed(2);
-//   }
-
-//   Future<void> increment() async {
-//     _realStock++;
-//     await save();
-//   }
-
-//   Future<void> decrement() async {
-//     if (_realStock <= 0) {
-//       return;
-//     }
-//     _realStock--;
-//     await save();
-//   }
-
-//   @override
-//   bool operator ==(covariant Product other) {
-//     if (identical(this, other)) return true;
-
-//     return other._id == _id || other._productId == _productId;
-//   }
-
-//   @override
-//   int get hashCode {
-//     return _id.hashCode;
-//   }
-// }
-/*
-    Created by: Bakhromjon Polat
-    Created on: Jan 05 2026
-
-    Github: https://github.com/BahromjonPolat
-    Leetcode: https://leetcode.com/BahromjonPolat/
-    LinkedIn: https://linkedin.com/in/bahromjon-polat
-    Telegram: https://t.me/BahromjonPolat
-*/
-
-/*
-    Created by: Bakhromjon Polat
-    Updated: Jan 06 2026
-    Fixed Hive nested objects issue by using JSON encoding
-*/
 
 import 'dart:convert';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pos_mobile/hive_helper/hive_helper.dart';
 import 'package:pos_mobile/models/only_product.dart';
 import 'package:pos_mobile/models/product_service/product_service.dart';
 import 'package:pos_mobile/models/products.dart';
 import 'package:pos_mobile/models/measurement_unit.dart';
 import 'package:pos_mobile/models/vat.dart';
 
-part 'product_model.g.dart';
+part 'scanned_product.g.dart';
 
-@HiveType(typeId: HiveTypes.product, adapterName: HiveAdapters.productApdapter)
-class Product extends HiveObject {
+@HiveType(typeId: 11,)
+class ScannedProduct extends HiveObject {
   @override
   String get key => id ?? '';
 
@@ -411,11 +131,12 @@ class Product extends HiveObject {
 
   @HiveField(39)
   num? originalAmount;
+  
+  @HiveField(40)
+  num? updateAmount;
 
-    @HiveField(40)
-  num? updateAmount = 0;
-      @HiveField(41)
-  bool? isScannedProduct = false;
+  @HiveField(41)
+  bool? isScannedProduct;
 
   /// ========================
   /// Transient fields (memory only)
@@ -549,7 +270,7 @@ class Product extends HiveObject {
   /// ========================
   /// Constructor
   /// ========================
-  Product({
+  ScannedProduct({
     this.id,
     this.sku,
     this.name,
@@ -561,6 +282,8 @@ class Product extends HiveObject {
     this.companyId,
     this.createdAt,
     this.description,
+    this.originalAmount,
+    this.updateAmount,
     dynamic createdBy,
     this.productTypeId,
     this.barcode,
@@ -572,9 +295,6 @@ class Product extends HiveObject {
     this.lastUpdatedTime,
     this.serialNumber,
     this.ownerType,
-    this.originalAmount,
-    this.updateAmount,
-    this.isScannedProduct,
     num realStock = 0,
     bool isScanned = false,
     num? amount,
@@ -588,7 +308,6 @@ class Product extends HiveObject {
     String? primarySupplierId,
     String? primarySupplierName,
     List<ProductService>? services,
-
   }) {
     _realStock = realStock;
     _isScanned = isScanned;
@@ -619,8 +338,8 @@ class Product extends HiveObject {
   /// ========================
   /// Factory constructors
   /// ========================
-  factory Product.fromApiModel(ProductForProductList api) {
-    return Product(
+  factory ScannedProduct.fromApiModel(ProductForProductList api) {
+    return ScannedProduct(
       id: api.id ?? '',
       sku: api.sku ?? '',
       name: api.name ?? '',
@@ -646,7 +365,7 @@ class Product extends HiveObject {
     );
   }
 
-  Product.fromJson(Map<String, dynamic> json) {
+ScannedProduct.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     sku = json['sku'];
     name = json['name'];
@@ -760,8 +479,9 @@ class Product extends HiveObject {
       if (_services != null) {
         _servicesJson = jsonEncode(_services!.map((e) => e.toJson()).toList());
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       print('❌ Error encoding complex fields: $e');
+      print('Stack: $stackTrace');
     }
   }
 
@@ -822,25 +542,25 @@ class Product extends HiveObject {
 
   void printDebugInfo() {}
 
-  Future<void> refreshFromBox() async {
-    if (id == null || id!.isEmpty) return;
+  // Future<void> refreshFromBox() async {
+  //   if (id == null || id!.isEmpty) return;
 
-    final box = HiveBoxes.productsBox;
-    final productKey = key.isNotEmpty ? key : id!;
+  //   final box = HiveBoxes.productsBox;
+  //   final productKey = key.isNotEmpty ? key : id!;
 
-    final updatedProduct = box.get(productKey);
-    if (updatedProduct != null) {
-      _measurementValuesJson = updatedProduct._measurementValuesJson;
-      _measurementValues = null;
-    }
-  }
+  //   final updatedProduct = box.get(productKey);
+  //   if (updatedProduct != null) {
+  //     _measurementValuesJson = updatedProduct._measurementValuesJson;
+  //     _measurementValues = null;
+  //   }
+  // }
 
   /// ========================
   /// Operators
   /// ========================
 
   @override
-  bool operator ==(covariant Product other) {
+  bool operator ==(covariant ScannedProduct other) {
     if (identical(this, other)) return true;
     return other.id == id;
   }
@@ -852,8 +572,8 @@ class Product extends HiveObject {
 /// ========================
 /// Extension for copyWith
 /// ========================
-extension ProductCopyWith on Product {
-  Product copyWith({
+extension ScannedProductCopyWith on ScannedProduct {
+  ScannedProduct copyWith({
     String? id,
     String? sku,
     String? name,
@@ -890,7 +610,7 @@ extension ProductCopyWith on Product {
     String? primarySupplierName,
     List<ProductService>? services,
   }) {
-    return Product(
+    return ScannedProduct(
       id: id ?? this.id,
       sku: sku ?? this.sku,
       name: name ?? this.name,

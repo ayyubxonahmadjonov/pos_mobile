@@ -25,9 +25,9 @@ class ProductSearchDelegate extends SearchDelegate {
   final bool? editC;
   ProductSearchDelegate({ required this.screenEnum, this.editC=false });
 
+
   @override
   String? get searchFieldLabel => AppStrings.search;
-
   @override
   TextStyle? get searchFieldStyle => const TextStyle(color: AppColors.white);
 
@@ -35,12 +35,12 @@ class ProductSearchDelegate extends SearchDelegate {
   ThemeData appBarTheme(BuildContext context) {
     return AppTheme.getApplicationTheme().copyWith(
       textSelectionTheme: TextSelectionThemeData(
-        cursorColor: AppColors.white.withOpacity(0.6),
+        cursorColor: AppColors.white.withValues(alpha: 0.6),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: false,
         border: InputBorder.none,
-        hintStyle: TextStyle(color: AppColors.white.withOpacity(0.6)),
+        hintStyle: TextStyle(color: AppColors.white.withValues(alpha: 0.6)),
       ),
     );
   }
@@ -68,7 +68,10 @@ class ProductSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return ProductList(products: _products, screenEnum: screenEnum ,a: 3, editC: editC,);
+    return ProductList(products: _products, screenEnum: screenEnum ,a: 3, editC: editC,
+    onProductUpdated: () {
+ close(context, null);
+    },);
   }
 
   @override
@@ -81,10 +84,32 @@ class ProductSearchDelegate extends SearchDelegate {
 
         _products = snapshot.requireData;
 
-        return ProductList(products: _products, screenEnum: screenEnum, a: 3,editC: editC, );
+        return ProductList(products: _products, screenEnum: screenEnum, a: 3,editC: editC, 
+        isSearchDelegate: true);
       },
     );
   }
 
   List<Product> _products = [];
 }
+
+
+/*
+    Fixed version - resets query and list without closing delegate
+*/
+/*
+    Fixed version - resets query and list without closing delegate
+*/
+
+  /*
+    Created by: Bakhromjon Polat
+    Created on: Dec 31 2022 08:56:03
+
+    Github: https://github.com/BahromjonPolat
+    Leetcode: https://leetcode.com/BahromjonPolat/
+    LinkedIn: https://linkedin.com/in/bahromjon-polat
+    Telegram: https://t.me/BahromjonPolat
+
+    Documentation: 
+*/
+

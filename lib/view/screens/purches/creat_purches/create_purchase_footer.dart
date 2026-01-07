@@ -19,7 +19,6 @@ import 'package:pos_mobile/view/screens/barcode/components/barcode_listener_widg
 import 'package:pos_mobile/view/widgets/widgets.dart';
 
 import '../../../../bloc/add_purches/bloc.dart';
-import '../../barcode/select_scan_type.dart';
 
 class CreatePurchaseFooter extends StatefulWidget {
   final bool? editC;
@@ -79,9 +78,7 @@ class _CreatePurchaseFooterState extends State<CreatePurchaseFooter> {
                 iconColor: AppColors.white,
                 color: AppColors.primary,
                 onTap: () {
-                  AppNavigator.push(
-                    const SelectBarCodeTypePage(from: 'purchase'),
-                  );
+
                 },
               )
             ],

@@ -45,8 +45,6 @@ class OrdersService {
         response: jsonContent,
       );
     } catch (e, s) {
-      print(e);
-      print(s);
       return HttpResult(
         statusCode: 500,
         isSuccess: false,

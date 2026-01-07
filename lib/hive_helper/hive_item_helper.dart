@@ -5,11 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pos_mobile/hive_helper/hive_helper.dart';
 import 'package:pos_mobile/models/product/product_model.dart';
+import 'package:pos_mobile/models/product/scanned_product.dart';
 import 'package:pos_mobile/product_model.dart';
 
 class HiveItemsHelper {
   const HiveItemsHelper._();
   static final Box<Product> box = HiveBoxes.productsBox;
+  static final Box<ScannedProduct> scannedBox = HiveBoxes.scannedProductBox;
+
   static final AppPrefs _prefs = AppPrefs.instance;
 
   static int _counted = 0;
@@ -50,22 +53,26 @@ class HiveItemsHelper {
     }
   }
 
-  /// Bitta mahsulotni yangilash
   static Future<void> updateProduct(Product product) async {
     try {
       final key = product.key.isNotEmpty ? product.key : product.id!;
 
-      // Encode qilish
-      // product.encodeComplexFields();
-
-      // Saqlash
       await box.put(key, product);
+      ScannedProduct scannedProduct = ScannedProduct(
+        name: product.name,
+        updateAmount: product.updateAmount,
+        id: product.id,
+        sku: product.sku,
+        originalAmount: product.originalAmount,
+        barcode: product.barcode,
+        measurementValues: product.measurementValues,
+      );
+      await scannedBox.put(key, scannedProduct);
     } catch (e) {
       rethrow;
     }
   }
 
-  /// Product ni key bo'yicha olish
   static Product? getByKey(String key) {
     try {
       return box.get(key);
@@ -74,7 +81,6 @@ class HiveItemsHelper {
     }
   }
 
-  /// Product ni ID bo'yicha olish
   static Product? getById(String id) {
     try {
       for (var product in box.values) {
@@ -89,11 +95,15 @@ class HiveItemsHelper {
   }
 
   static Product? getByBarcode(String? barcode) {
+    print('Barcode in local Data$barcode');
     if (barcode == null || barcode.isEmpty) return null;
 
     try {
       for (var item in box.values) {
         if (item.barcode != null && item.barcode!.contains(barcode)) {
+          print(item.name);
+          print(item.barcode);
+
           return item;
         }
       }
@@ -103,36 +113,64 @@ class HiveItemsHelper {
     }
   }
 
-  /// Mahsulotlarni qidirish
+  // static Future<List<Product>> searchProducts(String query) async {
+  //   try {
+  //     query = query.trim().toLowerCase().toLatin();
+
+  //     return box.values.where((product) {
+  //       String name = product.name.toString().toLowerCase().toLatin();
+  //       String sku = product.sku.toString().toLowerCase();
+
+  //       return (name.contains(query) ||
+  //           sku.contains(query) ||
+  //           (product.barcode != null &&
+  //               product.barcode!.join(' ').toLowerCase().contains(query)));
+  //     }).toList();
+  //   } catch (e) {
+
+  //     return [];
+  //   }
+  // }
   static Future<List<Product>> searchProducts(String query) async {
-    try {
-      query = query.trim().toLowerCase().toLatin();
+    final products = await Hive.box<Product>('products').values.toList();
 
-      return box.values.where((product) {
-        String name = product.name.toString().toLowerCase().toLatin();
-        String sku = product.sku.toString().toLowerCase();
+    final lowerQuery = query.toLowerCase();
 
-        return (name.contains(query) ||
-            sku.contains(query) ||
-            (product.barcode != null &&
-                product.barcode!.join(' ').toLowerCase().contains(query)));
-      }).toList();
-    } catch (e) {
-      // print('❌ Error searching products: $e');
-      return [];
-    }
+    final filtered = products.where((p) {
+      return (p.name ?? '').toLowerCase().contains(lowerQuery) ||
+          (p.sku ?? '').toLowerCase().contains(lowerQuery) ||
+          (p.barcode ?? '').toString().toLowerCase().contains(lowerQuery);
+    }).toList();
+
+    filtered.sort((a, b) {
+      final aSku = a.sku ?? '';
+      final bSku = b.sku ?? '';
+
+      if (aSku == query && bSku != query) return -1;
+      if (bSku == query && aSku != query) return 1;
+
+      final aNum = int.tryParse(aSku);
+      final bNum = int.tryParse(bSku);
+
+      if (aNum != null && bNum != null) {
+        return aNum.compareTo(bNum);
+      }
+
+      return aSku.compareTo(bSku);
+    });
+
+    return filtered;
   }
 
   static final Map<String, Product> _countedProducts = {};
 
-  /// Sanalgan mahsulotlarni saqlash
   static Future<void> putCountedProducts() async {
     try {
       _countedProducts.clear();
       Map<String, Product> entries = {};
 
       for (var product in box.values) {
-        if (product.amount != null && product.amount! > 0) {
+        if (product.measurementValues?.shopId?.amount != product.amount) {
           final key = product.key.isNotEmpty ? product.key : product.id!;
           entries[key] = product;
         }

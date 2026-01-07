@@ -18,5 +18,7 @@ class HiveBoxNames {
   static const String history = 'history';
   static const String employees = 'employees';
   static const String productFromJson = 'productFromJson';
+  static const String countedProductForNewBox = 'countedProductForNewBox';
+
 
 }

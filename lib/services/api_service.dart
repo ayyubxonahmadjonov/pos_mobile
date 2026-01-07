@@ -39,7 +39,6 @@ Future<HttpResult> post(
 }) async {
   try {
     Uri url = Uri.parse('$baseUrl$path');
-print(url);
     http.Response response;
 
     if (body == null) {

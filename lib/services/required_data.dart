@@ -51,7 +51,6 @@ class RequiredData {
         'Authorization': 'Bearer ${AppPrefs.instance.token}',
       },
     );
-    print('Current company result: ${result.statusCode}, ${result.response}');
 
     if (result.isSuccess) {
       return Company.fromJson(result.response);
@@ -59,7 +58,6 @@ class RequiredData {
     return null;
   }
 
-  /// ---------------- ALL SHOPS ----------------
   static Future<Shops?> fetchShops() async {
     final HttpResult result = await _requests.get(
       '/api/v1/shop',

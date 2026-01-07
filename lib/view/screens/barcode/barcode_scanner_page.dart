@@ -82,17 +82,15 @@ class _BarcodeScanPageState extends State<BarcodeScanPage> with WidgetsBindingOb
             controller: _controller,
             onDetect: (BarcodeCapture capture) async {
               final List<Barcode> barcodes = capture.barcodes;
-
-              // firstWhereOrNull o'rniga standart usul
               final Barcode? barcode = barcodes.firstWhere(
                 (b) => b.rawValue != null,
-                orElse: () => Barcode(rawValue: null), // agar topilmasa null qaytaradi
+                orElse: () => Barcode(rawValue: null), 
               );
 
               final String? scannedCode = barcode?.rawValue;
               if (scannedCode == null || scannedCode.isEmpty) return;
 
-              Product? product = Product();
+              Product? product = HiveItemsHelper.getByBarcode(scannedCode);
               if (product == null) {
                 Fluttertoast.showToast(msg: 'Product not found!');
                 return;
@@ -102,19 +100,12 @@ class _BarcodeScanPageState extends State<BarcodeScanPage> with WidgetsBindingOb
                   product.barcode!.contains(_barcodeSingleton.barcode);
               if (barcodeContains) return;
 
-              await _controller.stop(); // kamerani to'xtatish
+              await _controller.stop(); 
 
-              if (widget.from == "inventory") {
-                await AppNavigator.push(ProductDetilsScreen(product: product))
-                    .then((_) => _controller.start());
-              } else if (widget.from == "purchase") {
-                await AppNavigator.push(AddPurchaseProduct(product: product))
-                    .then((_) => _controller.start());
-              } else if (widget.from == "order") {
-                OrderItem orderItem = OrderItem.fromProduct(product);
-                OrderHelper.setCurrentItem = orderItem;
-                await AppNavigator.push(const OrderCountPage())
-                    .then((_) => _controller.start());
+              await AppNavigator.push(ProductDetilsScreen(product: product));
+    
+              if(mounted){
+                  await _controller.start();
               }
             },
           ),

@@ -170,8 +170,6 @@ class ApiRequests extends ApiService {
 headers: _headers.withTokenV2(),
         '/api/v1/short_products_for_pos?limit=10000&page=$page');
    
-   print(data.statusCode);
-   print(data.response);
 
     if (data.isSuccess) {
       return Products.fromJson(data.response);

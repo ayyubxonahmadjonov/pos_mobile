@@ -3,6 +3,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pos_mobile/hive_helper/hive_item_helper.dart';
 import 'package:pos_mobile/models/models.dart';
+import 'package:pos_mobile/models/product/scanned_product.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 import '../hive_helper/hive_boxes.dart';
 
@@ -12,7 +13,7 @@ class ExcelService {
   factory ExcelService() => _instance ??= ExcelService._();
 
   Future<String> createExcelFile() async {
-    final Box<Product> box = HiveBoxes.productsBox;
+    final Box<ScannedProduct> box = HiveBoxes.scannedProductBox;
 
     final Workbook workbook = Workbook();
     final Worksheet sheet = workbook.worksheets[0];
@@ -38,9 +39,9 @@ class ExcelService {
         rowIndex++;
         final row = rowIndex + 1;
 
-        final originalStock = item.originalAmount ?? 0;
+        final originalStock = item.measurementValues?.shopId?.amount ?? 0;
 
-        final updatedStock = item.measurementValues?.shopId?.amount ?? 0;
+        final updatedStock = item.updateAmount ?? 0;
 
         final difference = updatedStock - originalStock;
 
@@ -48,7 +49,7 @@ class ExcelService {
         sheet.getRangeByName('B$row').setText(item.sku?.toString() ?? '');
         sheet.getRangeByName('C$row').setText(item.name ?? '');
         sheet.getRangeByName('D$row').setText(item.barcode?.join(', ') ?? '');
-      sheet.getRangeByName('E$row').setNumber(originalStock.toDouble());
+        sheet.getRangeByName('E$row').setNumber(originalStock.toDouble());
         sheet.getRangeByName('F$row').setNumber(updatedStock.toDouble());
 
         sheet.getRangeByName('G$row').setNumber(difference.toDouble());
@@ -57,7 +58,6 @@ class ExcelService {
           sheet.getRangeByName('G$row').cellStyle.backColor = '#C6EFCE';
           sheet.getRangeByName('G$row').cellStyle.fontColor = '#006100';
         } else if (difference < 0) {
-          // Kamaygan - Qizil
           sheet.getRangeByName('G$row').cellStyle.backColor = '#FFC7CE';
           sheet.getRangeByName('G$row').cellStyle.fontColor = '#9C0006';
         }
