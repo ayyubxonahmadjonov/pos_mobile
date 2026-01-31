@@ -11,12 +11,9 @@ import 'package:pos_mobile/bloc/barcode/barcode_singleton.dart';
 import 'package:pos_mobile/bloc/blocs.dart';
 import 'package:pos_mobile/core/core.dart';
 import 'package:pos_mobile/hive_helper/hive_helper.dart';
-import 'package:pos_mobile/hive_helper/order_helper.dart';
-import 'package:pos_mobile/models/order/order_model.dart';
 import 'package:pos_mobile/models/product/product_model.dart';
 import 'package:pos_mobile/routes/routes.dart';
 import 'package:pos_mobile/view/screens/home/pages/items/product_details_screen.dart';
-import 'package:pos_mobile/view/screens/screen.dart';
 
 class BarcodeScanPage extends StatefulWidget {
   final String from;
